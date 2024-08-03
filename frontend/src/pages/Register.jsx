@@ -4,8 +4,8 @@ import React from "react";
 const Register = () => {
   return (
     <div className="flex h-dvh justify-center items-center">
-      <div className="rounded-2xl flex flex-col p-10 gap-10 bg-yellow-100">
-        <form action="submit">
+      <div className="rounded-2xl flex flex-col bg-yellow-100">
+        <form action="submit" className="flex flex-col p-10 gap-10">
           <Input
             type="email"
             label="Email"
@@ -22,7 +22,9 @@ const Register = () => {
             type={"password"}
             className="max-w-xs"
           />
-        <button type="submit" className="btn-primary">Submit</button>
+          <button type="submit" className="btn-primary">
+            Submit
+          </button>
         </form>
       </div>
     </div>
