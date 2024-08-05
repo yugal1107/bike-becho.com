@@ -4,7 +4,7 @@ import ItemCard from "./ItemCard";
 
 export default function Card() {
   return (
-    <div className="flex flex-wrap justify-center gap-8 p-12 px-52">
+    <div className="flex flex-wrap justify-center gap-8 p-5">
       {bikeData.map((bike) => (
         // <div
         //   key={bike.id}

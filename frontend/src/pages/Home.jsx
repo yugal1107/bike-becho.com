@@ -9,8 +9,7 @@ const Home = () => {
   // console.log(user);
 
   return (
-    <div>
-      <NavbarUI />
+    <div className="lg:px-52 lg:py-12">
       <Card></Card>
     </div>
   );
