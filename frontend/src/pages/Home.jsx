@@ -1,6 +1,7 @@
 import React from "react";
 import NavbarUI from "../components/Navbar/NavbarUI";
 import { useAuth } from "../context/authContext";
+import Card from "../components/Card/Card";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -10,6 +11,7 @@ const Home = () => {
   return (
     <div>
       <NavbarUI />
+      <Card></Card>
     </div>
   );
 };
