@@ -27,8 +27,8 @@ export const UserProvider = ({ children }) => {
         setLoading(false);
         // ...
       } else {
-        setCurrentUser(null);
-        // User is signed out
+        setLoading(false);
+        setCurrentUser(null); // User is signed out
         // ...
       }
     });

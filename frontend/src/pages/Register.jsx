@@ -4,14 +4,14 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../firebase";
 import { Button } from "@nextui-org/react";
 import { useAuth } from "../context/authContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = Navigate();
+  const navigate = useNavigate();
 
   const { user } = useAuth();
 
