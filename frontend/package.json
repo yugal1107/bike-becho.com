@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
-    "@sl-codeblaster/react-3d-animated-card": "^1.0.8",
     "clsx": "^2.1.1",
     "firebase": "^10.12.5",
     "framer-motion": "^11.3.21",
