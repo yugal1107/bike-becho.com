@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@material-tailwind/react": "^2.1.9",
+    "react-hot-toast": "^2.4.1"
+  }
+}

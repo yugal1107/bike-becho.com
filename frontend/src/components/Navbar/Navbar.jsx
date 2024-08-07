@@ -112,6 +112,9 @@ export default function NavbarUI() {
             Integrations
           </Link>
         </NavbarItem>
+        <NavbarItem>
+          <Link href="/sell" >SELL</Link>
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">

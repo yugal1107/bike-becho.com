@@ -6,6 +6,7 @@ import { Login } from "./pages/Login";
 import img2 from "./assets/img2.jpeg";
 import NavbarUI from "./components/Navbar/Navbar";
 import ItemPage from "./pages/ItemPage/ItemPage";
+import SellPage from "./pages/SellPage";
 
 const data = {
   id: 2,
@@ -26,6 +27,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/item/:itemid" element={<ItemPage />} />
+          <Route path="/sell" element={<SellPage/>} />
         </Routes>
       </Router>
     </>

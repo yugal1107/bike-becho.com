@@ -12,6 +12,14 @@ body {
   background: #f2f2f2;
 }
 
+#file-upload {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  cursor: pointer;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

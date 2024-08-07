@@ -35,13 +35,13 @@ export default function ItemCard({
       </CardBody>
       <CardFooter className="flex flex-row justify-between">
         <p className="uppercase font-light">{price}</p>
-          <Button
+          {/* <Button
             variant="solid"
             size="sm"
             className="bg-blue-600 text-white font-normal uppercase"
           >
             VIEW
-          </Button>
+          </Button> */}
       </CardFooter>
         </a>
     </Card>
