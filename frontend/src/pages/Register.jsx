@@ -1,10 +1,9 @@
-import { Input } from "@nextui-org/react";
+import { Input, Button } from "@nextui-org/react";
 import React, { useState } from "react";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../firebase";
-import { Button } from "@nextui-org/react";
 import { useAuth } from "../context/authContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +11,6 @@ const Register = () => {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-
   const { user } = useAuth();
 
   const handleSubmit = (e) => {
@@ -20,68 +18,46 @@ const Register = () => {
     const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
         navigate("/login");
-        // console.log(user);
-        // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorMessage);
-        // ..
+        setError(error.message);
       });
   };
 
-  console.log(user);
-
   return (
-    <div className="flex h-dvh justify-center items-center bg-yellow-200">
-      <div className="rounded-2xl flex flex-col bg-white w-1/3 shadow-lg">
-        <h1 className="text-3xl text-center p-7 rounded-2xl font-bold">
-          Register Here
-        </h1>
-        <form
-          action="submit"
-          onSubmit={handleSubmit}
-          className="flex flex-col p-5 px-10 gap-10"
-        >
+    <div className="flex h-screen justify-center items-center bg-gray-200">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md transition-transform transform hover:scale-[1.1]">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Register</h1>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
             label="Email"
             placeholder="you@example.com"
-            labelPlacement="outside"
+            fullWidth
             onChange={(e) => setEmail(e.target.value)}
-            //   startContent={
-            //     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-            //   }
+            className="border-gray-300 rounded-md shadow-sm"
           />
           <Input
-            labelPlacement="outside"
+            type="password"
             label="Password"
             placeholder="Enter your password"
-            type={"password"}
+            fullWidth
             onChange={(e) => setPassword(e.target.value)}
+            className="border-gray-300 rounded-md shadow-sm"
           />
-          {/* <button type="submit" className="btn-primary bg-yellow-500 rounded-lg p-2">
-            Submit
-          </button> */}
-          <div className="flex flex-col justify-center items-center">
-            <Button type="submit" className="bg-yellow-300 px-2">
-              Submit
-            </Button>
-            {/* <p className="text-center"> or </p>
-            <Button type="submit" className="bg-yellow-300 w-full">
-              Continue with Google
-            </Button> */}
-          </div>
+          <Button
+            type="submit"
+            className="w-full bg-blue-500 text-white hover:bg-green-600 transition-colors"
+          >
+            Register
+          </Button>
+          {error && (
+            <p className="mt-4 text-red-500 text-center bg-red-100 p-3 rounded-md">
+              {error}
+            </p>
+          )}
         </form>
-        {error && (
-          <p className="text-red-500 text-center bg-red-100 rounded-2xl p-3">
-            {error}
-          </p>
-        )}
       </div>
     </div>
   );
