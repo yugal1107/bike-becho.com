@@ -1,6 +1,6 @@
 import { Input, Button } from "@nextui-org/react";
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
 import { app } from "../firebase";
 import { useAuth } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,15 @@ const Register = () => {
     const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        navigate("/login");
+        const user = userCredential.user;
+        sendEmailVerification(user)
+          .then(() => {
+            alert("Verification email sent! Please check your inbox.");
+            navigate("/login");
+          })
+          .catch((error) => {
+            setError("Error sending verification email: " + error.message);
+          });
       })
       .catch((error) => {
         setError(error.message);

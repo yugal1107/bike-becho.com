@@ -6,8 +6,8 @@ import { Login } from "./pages/Login";
 import img2 from "./assets/img2.jpeg";
 import NavbarUI from "./components/Navbar/Navbar";
 import ItemPage from "./pages/ItemPage/ItemPage";
-import SellPage from "./pages/SellPage";
-import { useForm } from 'react-hook-form';
+import SellPage from "./pages/SellItem/SellPage";
+// import { useForm } from 'react-hook-form';
 
 const data = {
   id: 2,
@@ -19,11 +19,11 @@ const data = {
 };
 
 function App() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm();
   return (
     <>
     {/* <form onSubmit={handleSubmit((data) => console.log(data))}>

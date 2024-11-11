@@ -39,8 +39,8 @@ export default function NavbarUI() {
     <Navbar>
       <a href="/">
         <NavbarBrand>
-          <AcmeLogo />
-          <p className="font-bold text-inherit">ACME</p>
+          {/* <img src="bikelogo.png"></img> */}
+          <p className="font-bold text-inherit">MOTOMART</p>
         </NavbarBrand>{" "}
       </a>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -113,7 +113,7 @@ export default function NavbarUI() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/sell" >SELL</Link>
+          <Link href="/sell">SELL</Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
