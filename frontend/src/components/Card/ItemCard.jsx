@@ -20,7 +20,7 @@ export default function ItemCard({
 }) {
   return (
     <Card className={`py-4 hover:bg-cyan-100 ${className}`}>
-        <a href={`/item/${id}`}>
+        
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <h4 className="font-semibold text-cyan-700 text-large">{title}</h4>
         <small className="text-default-500">{year}</small>
@@ -43,7 +43,6 @@ export default function ItemCard({
             VIEW
           </Button> */}
       </CardFooter>
-        </a>
     </Card>
   );
 }

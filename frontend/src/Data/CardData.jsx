@@ -40,7 +40,7 @@ export const bikeData = [
     image: img2,
   },
   {
-    id: 1,
+    id: 3,
     title: "Yamaha FZ-S",
     brand: "Yamaha",
     model: "FZ-S V3",
@@ -55,7 +55,7 @@ export const bikeData = [
     image: img3,
   },
   {
-    id: 2,
+    id: 4,
     title: "Honda CB Shine",
     brand: "Honda",
     model: "CB Shine",
@@ -71,7 +71,7 @@ export const bikeData = [
     image: img4,
   },
   {
-    id: 1,
+    id: 5,
     title: "Yamaha FZ-S",
     brand: "Yamaha",
     model: "FZ-S V3",
@@ -86,7 +86,7 @@ export const bikeData = [
     image: img5,
   },
   {
-    id: 2,
+    id: 6,
     title: "Honda CB Shine",
     brand: "Honda",
     model: "CB Shine",
@@ -102,7 +102,7 @@ export const bikeData = [
     image: img6,
   },
   {
-    id: 1,
+    id: 7,
     title: "Yamaha FZ-S",
     brand: "Yamaha",
     model: "FZ-S V3",
@@ -117,7 +117,7 @@ export const bikeData = [
     image: img7,
   },
   {
-    id: 2,
+    id: 8,
     title: "Honda CB Shine",
     brand: "Honda",
     model: "CB Shine",

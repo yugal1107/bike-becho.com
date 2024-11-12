@@ -1,6 +1,7 @@
 import React from "react";
 import { bikeData } from "../../Data/CardData"; // Adjust the import path as needed
 import ItemCard from "./ItemCard";
+import { Link } from "react-router-dom";
 
 export default function Card() {
   return (
@@ -23,15 +24,18 @@ export default function Card() {
         //     <p className="text-green-500 font-bold text-lg mt-2">{bike.price}</p>
         //   </div>
         // </div>
-        <ItemCard
-          key={bike.id}
-          image={bike.image}
-          id={bike.id}
-          title={bike.title}
-          description={bike.description}
-          year={bike.year}
-          price={bike.price}
-        />
+        // href={`/item/${id}`}
+        <Link to={`/item/${bike.id}`}>
+          <ItemCard
+            key={bike.id}
+            image={bike.image}
+            id={bike.id}
+            title={bike.title}
+            description={bike.description}
+            year={bike.year}
+            price={bike.price}
+          />
+        </Link>
       ))}
     </div>
   );

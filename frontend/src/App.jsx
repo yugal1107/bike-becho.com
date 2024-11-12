@@ -26,7 +26,7 @@ function App() {
   // } = useForm();
   return (
     <>
-    {/* <form onSubmit={handleSubmit((data) => console.log(data))}>
+      {/* <form onSubmit={handleSubmit((data) => console.log(data))}>
       <input {...register('firstName')} />
       <input {...register('lastName', { required: true })} />
       {errors.lastName && <p>Last name is required.</p>}
@@ -41,7 +41,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/item/:itemid" element={<ItemPage />} />
-          <Route path="/sell" element={<SellPage/>} />
+          <Route path="/sell" element={<SellPage />} />
         </Routes>
       </Router>
     </>
