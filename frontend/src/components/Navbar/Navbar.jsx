@@ -121,9 +121,11 @@ export default function NavbarUI() {
           <Link href="/login">Login</Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="/register" variant="flat">
-            Sign Up
-          </Button>
+          <Link href="/register">
+            <Button color="primary" variant="flat">
+              Sign Up
+            </Button>
+          </Link>
         </NavbarItem>
       </NavbarContent>
     </Navbar>

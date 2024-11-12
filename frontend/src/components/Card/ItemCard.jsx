@@ -19,8 +19,10 @@ export default function ItemCard({
   className,
 }) {
   return (
-    <Card className={`py-4 hover:bg-cyan-100 ${className}`}>
-        
+    <Card
+      className={`py-4 hover:bg-cyan-100 ${className}`}
+      style={{ width: "300px" }}
+    >
       <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
         <h4 className="font-semibold text-cyan-700 text-large">{title}</h4>
         <small className="text-default-500">{year}</small>
@@ -31,17 +33,18 @@ export default function ItemCard({
           className="object-cover rounded-xl transform transition-transform duration-300 hover:scale-105"
           src={image}
           width={270}
+          height={180}
         />
       </CardBody>
-      <CardFooter className="flex flex-row justify-between">
-        <p className="uppercase font-light">{price}</p>
-          {/* <Button
-            variant="solid"
-            size="sm"
-            className="bg-blue-600 text-white font-normal uppercase"
-          >
-            VIEW
-          </Button> */}
+      <CardFooter className="flex flex-row justify-between items-center">
+        <p className="uppercase font-light text-lg">{price}</p>
+        <Button
+          variant="solid"
+          size="sm"
+          className="bg-blue-600 text-white font-normal uppercase"
+        >
+          View
+        </Button>
       </CardFooter>
     </Card>
   );

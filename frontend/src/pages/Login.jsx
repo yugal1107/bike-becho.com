@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { FaGoogle } from "react-icons/fa";
 
 const provider = new GoogleAuthProvider();
 
@@ -44,17 +45,17 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex h-screen justify-center items-center bg-gray-200">
-      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md transition-transform transform hover:scale-[1.1]">
-        <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex h-screen justify-center items-center bg-gradient-to-r from-blue-500 to-purple-500">
+      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md transition-transform transform hover:scale-105">
+        <h1 className="text-4xl font-bold text-center mb-6 text-gray-800">Login</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
           <Input
             type="email"
             label="Email"
             placeholder="you@example.com"
             fullWidth
             onChange={(e) => setEmail(e.target.value)}
-            className="border-gray-300 rounded-md shadow-sm"
+            className="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
           />
           <Input
             type="password"
@@ -62,11 +63,11 @@ export const Login = () => {
             placeholder="Enter your password"
             fullWidth
             onChange={(e) => setPassword(e.target.value)}
-            className="border-gray-300 rounded-md shadow-sm"
+            className="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
           />
           <Button
             type="submit"
-            className="w-full bg-sky-400 text-white hover:bg-green-600"
+            className="w-full bg-blue-500 text-white text-xl font-semibold py-2 rounded-md hover:bg-blue-600 transition-colors"
           >
             Log In
           </Button>
@@ -75,8 +76,9 @@ export const Login = () => {
           </div>
           <Button
             onClick={handleGoogleSignIn}
-            className="w-full bg-sky-400 text-white hover:bg-green-600"
+            className="w-full bg-red-500 text-white text-xl py-2 rounded-md hover:bg-red-600 transition-colors flex items-center justify-center"
           >
+            <FaGoogle className="mr-2" />
             Continue with Google
           </Button>
           {error && (
