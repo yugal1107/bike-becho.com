@@ -1,3 +1,4 @@
+// src/components/Messages/Messages.jsx
 import React, { useState, useEffect } from "react";
 import {
   getFirestore,
@@ -8,11 +9,9 @@ import {
   addDoc,
   serverTimestamp,
   orderBy,
-  doc,
-  updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { app } from "../firebase";
+import { app } from "../../firebase";
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
@@ -81,8 +80,7 @@ const Messages = () => {
       });
 
       // Update conversation's last message
-      const conversationRef = doc(db, "conversations", selectedConversation.id);
-      await updateDoc(conversationRef, {
+      await addDoc(collection(db, "conversations", selectedConversation.id), {
         lastMessageAt: serverTimestamp(),
         lastMessage: newMessage,
       });

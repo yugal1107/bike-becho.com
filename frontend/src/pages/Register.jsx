@@ -4,9 +4,9 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from "firebase/auth";
 import { app } from "../firebase";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -20,15 +20,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const auth = getAuth(app);
-    const db = getFirestore(app);
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      await setDoc(doc(db, "users", user.uid), {
-        name,
-        email,
+      // Update the user's display name
+      await updateProfile(user, {
+        displayName: name,
       });
 
       await sendEmailVerification(user);

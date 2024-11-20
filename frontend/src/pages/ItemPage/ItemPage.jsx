@@ -4,6 +4,7 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { Chip } from "@nextui-org/react"; // Add this import
 import { app } from "../../firebase";
 import BuyButton from "./BuyButton";
+import MessageButton from "./MessageButton";
 
 const ItemPage = () => {
   const { itemid } = useParams();
@@ -182,7 +183,7 @@ const ItemPage = () => {
 
               {/* Action Button */}
               <div>
-                <BuyButton itemId={itemid} sellerId={item.userId} />
+                <MessageButton itemId={itemid} sellerId={item.userId} />
               </div>
             </div>
           </div>

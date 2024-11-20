@@ -23,6 +23,7 @@ function App() {
           <Route path="/sell" element={<SellPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/messages" element={<Messages />} />
           <Route path="/messages/:buyRequestId" element={<Messages />} />
         </Routes>
       </Router>
