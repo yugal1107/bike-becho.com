@@ -10,7 +10,11 @@ import {
   CardBody,
   Divider,
 } from "@nextui-org/react";
-import { Upload } from "lucide-react";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { app } from "../../firebase";
+import { Cloudinary } from "cloudinary-core";
+import { FaUpload } from "react-icons/fa"; // Import the Upload icon
 
 const VehicleListingForm = () => {
   const [formData, setFormData] = useState({
@@ -21,8 +25,6 @@ const VehicleListingForm = () => {
     price: "",
     mileage: "",
     fuelType: "",
-    transmission: "",
-    location: "",
     description: "",
     sellerName: "",
     sellerContact: "",
@@ -41,16 +43,19 @@ const VehicleListingForm = () => {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    setLoading(true);
+    const cloudinary = new Cloudinary({
+      cloud_name: "your-cloud-name",
+      secure: true,
+    });
 
-    try {
-      const uploadPromises = files.map(async (file) => {
+    const uploadedImages = await Promise.all(
+      files.map(async (file) => {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "your_upload_preset"); // Replace with your Cloudinary upload preset
+        formData.append("upload_preset", "your-upload-preset");
 
         const response = await fetch(
-          `https://api.cloudinary.com/v1_1/your_cloud_name/image/upload`, // Replace with your cloud name
+          `https://api.cloudinary.com/v1_1/dtzjzuoud/image/upload`,
           {
             method: "POST",
             body: formData,
@@ -59,15 +64,10 @@ const VehicleListingForm = () => {
 
         const data = await response.json();
         return data.secure_url;
-      });
+      })
+    );
 
-      const uploadedUrls = await Promise.all(uploadPromises);
-      setImages((prev) => [...prev, ...uploadedUrls]);
-    } catch (error) {
-      console.error("Error uploading images:", error);
-    } finally {
-      setLoading(false);
-    }
+    setImages(uploadedImages);
   };
 
   const handleSubmit = async (e) => {
@@ -75,39 +75,40 @@ const VehicleListingForm = () => {
     setLoading(true);
 
     try {
-      const vehicleData = {
+      const auth = getAuth(app);
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert("You must be logged in to list a vehicle.");
+        setLoading(false);
+        return;
+      }
+
+      const db = getFirestore(app);
+      const newListing = {
         ...formData,
         images,
         createdAt: new Date(),
+        userId: user.uid,
       };
 
-      const response = await fetch("/api/vehicles", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(vehicleData),
-      });
+      await addDoc(collection(db, "listings"), newListing);
 
-      if (response.ok) {
-        alert("Vehicle listed successfully!");
-        setFormData({
-          title: "",
-          brand: "",
-          model: "",
-          year: "",
-          price: "",
-          mileage: "",
-          fuelType: "",
-          transmission: "",
-          location: "",
-          description: "",
-          sellerName: "",
-          sellerContact: "",
-          sellerEmail: "",
-        });
-        setImages([]);
-      }
+      alert("Vehicle listed successfully!");
+      setFormData({
+        title: "",
+        brand: "",
+        model: "",
+        year: "",
+        price: "",
+        mileage: "",
+        fuelType: "",
+        description: "",
+        sellerName: "",
+        sellerContact: "",
+        sellerEmail: "",
+      });
+      setImages([]);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -141,7 +142,6 @@ const VehicleListingForm = () => {
               onChange={(e) => handleInputChange("title", e.target.value)}
               required
             />
-
             <div className="grid grid-cols-2 gap-4">
               <Input
                 label="Brand"
@@ -158,7 +158,6 @@ const VehicleListingForm = () => {
                 required
               />
             </div>
-
             <div className="grid grid-cols-2 gap-4">
               <Input
                 type="number"
@@ -172,27 +171,16 @@ const VehicleListingForm = () => {
                 type="number"
                 label="Price"
                 placeholder="Enter price"
-                startContent={
-                  <div className="pointer-events-none flex items-center">
-                    <span className="text-default-400 text-small">$</span>
-                  </div>
-                }
                 value={formData.price}
                 onChange={(e) => handleInputChange("price", e.target.value)}
                 required
               />
             </div>
-
             <div className="grid grid-cols-2 gap-4">
               <Input
                 type="number"
                 label="Mileage"
                 placeholder="Enter mileage"
-                endContent={
-                  <div className="pointer-events-none flex items-center">
-                    <span className="text-default-400 text-small">km</span>
-                  </div>
-                }
                 value={formData.mileage}
                 onChange={(e) => handleInputChange("mileage", e.target.value)}
                 required
@@ -211,7 +199,6 @@ const VehicleListingForm = () => {
                 ))}
               </Select>
             </div>
-
             <Textarea
               label="Description"
               placeholder="Enter vehicle description"
@@ -270,25 +257,26 @@ const VehicleListingForm = () => {
               className="flex items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50"
             >
               <div className="space-y-1 text-center">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                <FaUpload className="mx-auto h-12 w-12 text-gray-400" />{" "}
+                {/* Use the imported Upload icon */}
                 <div className="text-sm text-gray-600">
                   Click to upload images
                 </div>
               </div>
             </label>
+            {images.length > 0 && (
+              <div className="grid grid-cols-4 gap-4 mt-4">
+                {images.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Vehicle preview ${index + 1}`}
+                    className="w-full h-24 object-cover rounded-lg"
+                  />
+                ))}
+              </div>
+            )}
           </div>
-          {images.length > 0 && (
-            <div className="grid grid-cols-4 gap-4">
-              {images.map((url, index) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt={`Vehicle preview ${index + 1}`}
-                  className="w-full h-24 object-cover rounded-lg"
-                />
-              ))}
-            </div>
-          )}
 
           <Button type="submit" color="primary" isLoading={loading} fullWidth>
             {loading ? "Submitting..." : "List Vehicle"}
