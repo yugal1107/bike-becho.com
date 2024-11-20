@@ -1,12 +1,55 @@
 import React, { useState } from "react";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDoc,
+  doc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { app } from "../../firebase";
 
-const BuyButton = ({ onBuy }) => {
+const BuyButton = ({ itemId, userId }) => {
   const [showModal, setShowModal] = useState(false);
   const [note, setNote] = useState("");
 
-  const handleBuy = () => {
-    onBuy(note);
-    setShowModal(false);
+  const handleBuy = async () => {
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+
+    if (!user) {
+      alert("You must be logged in to buy an item.");
+      return;
+    }
+
+    const buyerDoc = await getDoc(doc(db, "users", user.uid));
+    const buyerName = buyerDoc.exists()
+      ? buyerDoc.data().name
+      : "Unknown Buyer";
+
+    const buyRequest = {
+      itemId,
+      buyerId: user.uid,
+      note,
+      timestamp: new Date(),
+    };
+
+    const notification = {
+      userId,
+      message: `${buyerName} has requested to buy item ${itemId}`,
+      read: false,
+      timestamp: new Date(),
+    };
+
+    try {
+      await addDoc(collection(db, "buyRequests"), buyRequest);
+      await addDoc(collection(db, "notifications"), notification);
+      alert("Buy request sent!");
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error sending buy request:", error);
+    }
   };
 
   return (

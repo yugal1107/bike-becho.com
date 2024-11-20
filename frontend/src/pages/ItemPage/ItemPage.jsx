@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { Chip } from "@nextui-org/react";  // Add this import
+import { Chip } from "@nextui-org/react"; // Add this import
 import { app } from "../../firebase";
 import BuyButton from "./BuyButton";
 
@@ -44,9 +44,13 @@ const ItemPage = () => {
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="text-sm mb-6">
-          <Link to="/" className="text-red-500 hover:text-red-600">Home</Link>
+          <Link to="/" className="text-red-500 hover:text-red-600">
+            Home
+          </Link>
           <span className="mx-2">/</span>
-          <span className="text-gray-600">{item.brand} {item.model}</span>
+          <span className="text-gray-600">
+            {item.brand} {item.model}
+          </span>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-6 lg:p-8">
@@ -67,9 +71,17 @@ const ItemPage = () => {
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
                       className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 
-                        ${selectedImage === idx ? 'border-red-500' : 'border-gray-200'}`}
+                        ${
+                          selectedImage === idx
+                            ? "border-red-500"
+                            : "border-gray-200"
+                        }`}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={img}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
                     </button>
                   ))}
                 </div>
@@ -79,8 +91,12 @@ const ItemPage = () => {
             {/* Details */}
             <div className="space-y-6">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{item.title}</h1>
-                <p className="text-2xl font-bold text-red-500">₹{Number(item.price).toLocaleString('en-IN')}</p>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  {item.title}
+                </h1>
+                <p className="text-2xl font-bold text-red-500">
+                  ₹{Number(item.price).toLocaleString("en-IN")}
+                </p>
                 {item.year && (
                   <p className="text-sm text-gray-600 mt-1">
                     {calculateAge(item.year)} years old ({item.year})
@@ -91,7 +107,9 @@ const ItemPage = () => {
               {/* Enhanced Specifications */}
               <div className="flex flex-wrap gap-3 mb-4">
                 {item.condition && (
-                  <Chip color={item.condition === 'New' ? 'success' : 'default'}>
+                  <Chip
+                    color={item.condition === "New" ? "success" : "default"}
+                  >
                     {item.condition}
                   </Chip>
                 )}
@@ -120,12 +138,12 @@ const ItemPage = () => {
               {/* Specifications */}
               <div className="grid grid-cols-2 gap-y-4">
                 {[
-                  ['Brand', item.brand],
-                  ['Model', item.model],
-                  ['Year', item.year],
-                  ['Mileage', `${item.mileage} km`],
-                  ['Fuel Type', item.fuelType],
-                  ['Location', item.location || 'Not specified']
+                  ["Brand", item.brand],
+                  ["Model", item.model],
+                  ["Year", item.year],
+                  ["Mileage", `${item.mileage} km`],
+                  ["Fuel Type", item.fuelType],
+                  ["Location", item.location || "Not specified"],
                 ].map(([label, value]) => (
                   <div key={label}>
                     <p className="text-gray-500 text-sm">{label}</p>
@@ -137,26 +155,34 @@ const ItemPage = () => {
               {/* Description */}
               <div>
                 <h3 className="text-lg font-semibold mb-2">Description</h3>
-                <p className="text-gray-700 whitespace-pre-line">{item.description}</p>
+                <p className="text-gray-700 whitespace-pre-line">
+                  {item.description}
+                </p>
               </div>
 
               {/* Seller Info */}
               <div className="border-t pt-6">
-                <h3 className="text-lg font-semibold mb-4">Seller Information</h3>
+                <h3 className="text-lg font-semibold mb-4">
+                  Seller Information
+                </h3>
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
                     <span className="text-xl">👤</span>
                   </div>
                   <div>
-                    <p className="font-medium">{item.sellerName || 'Anonymous Seller'}</p>
-                    <p className="text-gray-500 text-sm">Member since {item.sellerJoinDate || 'recently'}</p>
+                    <p className="font-medium">
+                      {item.sellerName || "Anonymous Seller"}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Member since {item.sellerJoinDate || "recently"}
+                    </p>
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
-              <div className="pt-6">
-                <BuyButton className="w-full md:w-auto" />
+              <div>
+                <BuyButton itemId={itemid} sellerId={item.userId} />
               </div>
             </div>
           </div>

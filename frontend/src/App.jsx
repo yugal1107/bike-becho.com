@@ -7,6 +7,7 @@ import img2 from "./assets/img2.jpeg";
 import NavbarUI from "./components/Navbar/Navbar";
 import ItemPage from "./pages/ItemPage/ItemPage";
 import SellPage from "./pages/SellItem/SellPage";
+import Profile from "./components/Profile";
 // import { useForm } from 'react-hook-form';
 
 const data = {
@@ -42,6 +43,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/item/:itemid" element={<ItemPage />} />
           <Route path="/sell" element={<SellPage />} />
+          <Route path="/profile" component={Profile} />
         </Routes>
       </Router>
     </>

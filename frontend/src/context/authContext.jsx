@@ -13,27 +13,12 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const auth = getAuth(app);
-    // const unsubscribe = auth.onAuthStateChanged((user) => {
-    //   setCurrentUser(user);
-    //   setLoading(false);
-    // });
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-        const uid = user.uid;
-        setCurrentUser(user);
-        setLoading(false);
-        // ...
-      } else {
-        setLoading(false);
-        setCurrentUser(null); // User is signed out
-        // ...
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setLoading(false);
     });
 
-    // return () => unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   return (

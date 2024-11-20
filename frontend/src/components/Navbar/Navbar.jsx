@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -10,21 +10,38 @@ import {
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
+  Avatar,
 } from "@nextui-org/react";
 import {
   ChevronDown,
+  Scale,
+  Bell,
   Lock,
   Activity,
   Flash,
   Server,
   TagUser,
-  Scale,
 } from "./Icons.jsx";
 import { AcmeLogo } from "./AcmeLogo.jsx";
+import { useAuth } from "../../context/authContext";
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "../../firebase";
 
 export default function NavbarUI() {
+  const { currentUser } = useAuth();
+  const auth = getAuth(app);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
+    bell: <Bell className="text-default-500" fill="currentColor" size={24} />,
     scale: <Scale className="text-warning" fill="currentColor" size={30} />,
     lock: <Lock className="text-success" fill="currentColor" size={30} />,
     activity: (
@@ -39,10 +56,10 @@ export default function NavbarUI() {
     <Navbar>
       <a href="/">
         <NavbarBrand>
-          {/* <img src="bikelogo.png"></img> */}
           <p className="font-bold text-inherit">MOTOMART</p>
-        </NavbarBrand>{" "}
+        </NavbarBrand>
       </a>
+
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <Dropdown>
           <NavbarItem>
@@ -102,31 +119,59 @@ export default function NavbarUI() {
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
         <NavbarItem>
           <Link href="/sell">SELL</Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/login">Login</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href="/register">
-            <Button color="primary" variant="flat">
-              Sign Up
+
+      <NavbarContent justify="end" className="gap-4">
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Button isIconOnly variant="light">
+              {icons.bell}
             </Button>
-          </Link>
-        </NavbarItem>
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Notifications">
+            {/* Add your notifications here */}
+          </DropdownMenu>
+        </Dropdown>
+
+        {currentUser ? (
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <Avatar
+                as="button"
+                size="sm"
+                name={currentUser.displayName || "User"}
+              />
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Profile Actions">
+              <DropdownItem key="profile" as={Link} href="/profile">
+                My Profile
+              </DropdownItem>
+              <DropdownItem key="settings">Settings</DropdownItem>
+              <DropdownItem
+                key="logout"
+                className="text-danger"
+                color="danger"
+                onClick={handleLogout}
+              >
+                Log Out
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : (
+          <>
+            <NavbarItem className="hidden lg:flex">
+              <Link href="/login">Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button color="primary" variant="flat" as={Link} href="/register">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
     </Navbar>
   );
