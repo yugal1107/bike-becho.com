@@ -1,100 +1,164 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { bikeData } from "../../Data/CardData";
-import ItemCard from "../../components/Card/ItemCard";
+import { useParams, Link } from "react-router-dom";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { Chip } from "@nextui-org/react";  // Add this import
+import { app } from "../../firebase";
 import BuyButton from "./BuyButton";
 
 const ItemPage = () => {
   const { itemid } = useParams();
-  const [item, setItem] = useState({});
+  const [item, setItem] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
-    const bike = bikeData.find((bike) => bike.id === Number(itemid));
-    setItem(bike);
+    const fetchItemData = async () => {
+      const db = getFirestore(app);
+      const itemDoc = doc(db, "listings", itemid);
+      const itemSnapshot = await getDoc(itemDoc);
+
+      if (itemSnapshot.exists()) {
+        setItem(itemSnapshot.data());
+      } else {
+        console.error("No such document!");
+      }
+    };
+
+    fetchItemData();
   }, [itemid]);
 
+  const calculateAge = (year) => {
+    const currentYear = new Date().getFullYear();
+    return currentYear - Number(year);
+  };
+
+  if (!item) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-red-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-100 min-h-screen py-10">
+    <div className="bg-gray-50 min-h-screen py-6">
       <div className="container mx-auto px-4">
-        {/* Main Bike Detail Section */}
-        <div className="bg-white rounded-lg shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="rounded-lg overflow-hidden">
-            <img src={item.image} alt={item.title} className="w-full h-full" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold mb-4 text-red-500">
-              {item.title || "Listing Title"}
-            </h1>
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div>
-                <p className="text-gray-500 font-medium">Brand</p>
-                <p>{item.brand || "Brand Name"}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 font-medium">Model</p>
-                <p>{item.model || "Model Name"}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 font-medium">Year</p>
-                <p>{item.year || "Year of Manufacture"}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 font-medium">Price</p>
-                <p>${item.price || "Price"}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 font-medium">Mileage</p>
-                <p>{item.mileage || "Mileage in km"}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 font-medium">Fuel Type</p>
-                <p>{item.fuelType || "Fuel Type"}</p>
-              </div>
-            </div>
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">Description</h2>
-              <p>
-                {item.description ||
-                  "Vehicle description goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
-              </p>
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold mb-2">Seller Information</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-gray-500 font-medium">Name</p>
-                  <p>{item.sellerName || "Seller Name"}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 font-medium">Contact Number</p>
-                  <p>{item.contactNumber || "Contact Number"}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 font-medium">Email</p>
-                  <p>{item.email || "Seller Email"}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <BuyButton />
+        {/* Breadcrumb */}
+        <div className="text-sm mb-6">
+          <Link to="/" className="text-red-500 hover:text-red-600">Home</Link>
+          <span className="mx-2">/</span>
+          <span className="text-gray-600">{item.brand} {item.model}</span>
         </div>
 
-        {/* More Items Section */}
-        <div className="mt-10">
-          <h2 className="text-2xl font-bold mb-4">
-            More items from this region
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {bikeData.map((bike) => (
-              <ItemCard
-                key={bike.id}
-                image={bike.image}
-                id={bike.id}
-                title={bike.title}
-                year={bike.year}
-                price={bike.price}
-              />
-            ))}
+        <div className="bg-white rounded-xl shadow-lg p-6 lg:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Image Gallery */}
+            <div className="space-y-4">
+              <div className="rounded-lg overflow-hidden border border-gray-200">
+                <img
+                  src={item.images?.[selectedImage]}
+                  alt={item.title}
+                  className="w-full h-[400px] object-cover"
+                />
+              </div>
+              {item.images?.length > 1 && (
+                <div className="flex space-x-2 overflow-x-auto pb-2">
+                  {item.images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedImage(idx)}
+                      className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 
+                        ${selectedImage === idx ? 'border-red-500' : 'border-gray-200'}`}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Details */}
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">{item.title}</h1>
+                <p className="text-2xl font-bold text-red-500">₹{Number(item.price).toLocaleString('en-IN')}</p>
+                {item.year && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    {calculateAge(item.year)} years old ({item.year})
+                  </p>
+                )}
+              </div>
+
+              {/* Enhanced Specifications */}
+              <div className="flex flex-wrap gap-3 mb-4">
+                {item.condition && (
+                  <Chip color={item.condition === 'New' ? 'success' : 'default'}>
+                    {item.condition}
+                  </Chip>
+                )}
+                {item.mileage && (
+                  <Chip variant="flat" className="bg-green-100">
+                    {item.mileage} km
+                  </Chip>
+                )}
+                {item.fuelType && (
+                  <Chip variant="flat" className="bg-purple-100">
+                    {item.fuelType}
+                  </Chip>
+                )}
+                {item.transmission && (
+                  <Chip variant="flat" className="bg-blue-100">
+                    {item.transmission}
+                  </Chip>
+                )}
+                {item.ownership && (
+                  <Chip variant="flat" className="bg-yellow-100">
+                    {item.ownership} Owner
+                  </Chip>
+                )}
+              </div>
+
+              {/* Specifications */}
+              <div className="grid grid-cols-2 gap-y-4">
+                {[
+                  ['Brand', item.brand],
+                  ['Model', item.model],
+                  ['Year', item.year],
+                  ['Mileage', `${item.mileage} km`],
+                  ['Fuel Type', item.fuelType],
+                  ['Location', item.location || 'Not specified']
+                ].map(([label, value]) => (
+                  <div key={label}>
+                    <p className="text-gray-500 text-sm">{label}</p>
+                    <p className="font-medium">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Description */}
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Description</h3>
+                <p className="text-gray-700 whitespace-pre-line">{item.description}</p>
+              </div>
+
+              {/* Seller Info */}
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-semibold mb-4">Seller Information</h3>
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                    <span className="text-xl">👤</span>
+                  </div>
+                  <div>
+                    <p className="font-medium">{item.sellerName || 'Anonymous Seller'}</p>
+                    <p className="text-gray-500 text-sm">Member since {item.sellerJoinDate || 'recently'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-6">
+                <BuyButton className="w-full md:w-auto" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -103,75 +167,3 @@ const ItemPage = () => {
 };
 
 export default ItemPage;
-
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import { bikeData } from "../../Data/CardData";
-// import ItemCard from "../../components/Card/ItemCard";
-
-// const ItemPage = () => {
-//   const { itemid } = useParams();
-//   const [item, setItem] = useState({});
-
-//   useEffect(() => {
-//     const item = bikeData.find((item) => item.id === Number(itemid));
-//     // console.log(item);
-//     setItem(item);
-//   }, [itemid]);
-
-//   // const [loading, setLoading] = useState(true);
-//   return (
-//     <div className="h-dvh">
-//       <div className="flex gap-5 p-10 rounded-3xl">
-//         <div className="image rounded-3xl basis-1/3 bg-cyan-50 flex items-center justify-center">
-//           <img src={item.image} alt="" className="w-48" />
-//         </div>
-//         <div className="flex flex-col gap-2 rounded-3xl basis-2/3 bg-cyan-50 p-10">
-//           <div className="title text-2xl font-bold px-4 p-2">
-//             Basic Information
-//           </div>
-//           <div className="ml-3 p-2 px-4">
-//             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Delectus
-//             culpa vitae eius.
-//           </div>
-//           <div className="ml-3 p-2 px-4">
-//             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem,
-//             nostrum.
-//           </div>
-//           <div className="ml-3 p-2 px-4">
-//             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim
-//             veniam, itaque voluptate atque possimus eius suscipit praesentium.
-//             Suscipit placeat magnam assumenda omnis reprehenderit.
-//           </div>
-//           <div className="ml-3 p-2 px-4">
-//             Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-//             exercitationem ratione nulla nobis culpa mollitia consequuntur
-//             voluptatem labore officia!
-//           </div>
-//           <div className="ml-3 p-2 px-4">Lorem ipsum dolor sit amet.</div>
-//         </div>
-//       </div>
-//       <div className="rounded-3xl ng-cyan-50 p-5 mt-0 m-10 flex flex-col bg-cyan-50">
-//         <div className="ml-2 p-3 py-5 text-2xl font-bold">
-//           More items from this region
-//         </div>
-//         <div className="flex gap-10 rounded-xl p-7 overflow-x-scroll">
-//           {bikeData.map((bike) => (
-//             <ItemCard
-//               className="flex-shrink-0"
-//               key={bike.id}
-//               image={bike.image}
-//               id={bike.id}
-//               title={bike.title}
-//               description={bike.description}
-//               year={bike.year}
-//               price={bike.price}
-//             />
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ItemPage;
