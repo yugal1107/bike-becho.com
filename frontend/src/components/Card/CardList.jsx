@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
-import { Link } from "react-router-dom";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../../firebase";
 
@@ -29,18 +28,16 @@ const CardList = () => {
           key={listing.id}
           className="transform transition duration-300 hover:scale-105 hover:shadow-lg"
         >
-          <Link to={`/item/${listing.id}`}>
-            <ItemCard
-              image={listing.images ? listing.images[0] : listing.image}
-              id={listing.id}
-              title={listing.title}
-              description={listing.description}
-              year={listing.year}
-              mileage={listing.mileage}
-              price={listing.price}
-              className="bg-white rounded-lg shadow-lg p-6"
-            />
-          </Link>
+          <ItemCard
+            image={listing.images ? listing.images[0] : listing.image}
+            id={listing.id}
+            title={listing.title}
+            description={listing.description}
+            year={listing.year}
+            mileage={listing.mileage}
+            price={listing.price}
+            className="bg-white rounded-lg shadow-lg p-6"
+          />
         </div>
       ))}
     </div>
