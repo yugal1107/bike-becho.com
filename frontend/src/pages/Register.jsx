@@ -6,35 +6,37 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { app } from "../firebase";
-import { useAuth } from "../context/authContext";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const { user } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const auth = getAuth(app);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        sendEmailVerification(user)
-          .then(() => {
-            alert("Verification email sent! Please check your inbox.");
-            navigate("/login");
-          })
-          .catch((error) => {
-            setError("Error sending verification email: " + error.message);
-          });
-      })
-      .catch((error) => {
-        setError(error.message);
+    const db = getFirestore(app);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        name,
+        email,
       });
+
+      await sendEmailVerification(user);
+      alert("Verification email sent! Please check your inbox.");
+      navigate("/login");
+    } catch (error) {
+      setError("Error creating account: " + error.message);
+    }
   };
 
   return (
@@ -45,12 +47,22 @@ const Register = () => {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <Input
+            type="text"
+            label="Name"
+            placeholder="Your Name"
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+            className="border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <Input
             type="email"
             label="Email"
             placeholder="you@example.com"
             fullWidth
             onChange={(e) => setEmail(e.target.value)}
             className="border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+            required
           />
           <Input
             type="password"
@@ -59,6 +71,7 @@ const Register = () => {
             fullWidth
             onChange={(e) => setPassword(e.target.value)}
             className="border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+            required
           />
           <Button
             type="submit"

@@ -1,5 +1,5 @@
 import React from "react";
-export const ChevronDown = ({fill, size, height, width, ...props}) => {
+export const ChevronDown = ({ fill, size, height, width, ...props }) => {
   return (
     <svg
       fill="none"
@@ -21,7 +21,7 @@ export const ChevronDown = ({fill, size, height, width, ...props}) => {
   );
 };
 
-export const Lock = ({fill, size, height, width, ...props}) => {
+export const Lock = ({ fill, size, height, width, ...props }) => {
   const color = fill;
 
   return (
@@ -68,7 +68,7 @@ export const Lock = ({fill, size, height, width, ...props}) => {
   );
 };
 
-export const Activity = ({fill, size, height, width, ...props}) => {
+export const Activity = ({ fill, size, height, width, ...props }) => {
   return (
     <svg
       height={size || height || 24}
@@ -89,6 +89,30 @@ export const Activity = ({fill, size, height, width, ...props}) => {
         <path d="M19.668 2.35a1.922 1.922 0 11-1.922 1.922 1.921 1.921 0 011.922-1.922z" />
         <path d="M20.756 9.269a20.809 20.809 0 01.194 3.034c0 6.938-2.312 9.25-9.25 9.25s-9.25-2.312-9.25-9.25 2.313-9.25 9.25-9.25a20.931 20.931 0 012.983.187" />
       </g>
+    </svg>
+  );
+};
+
+export const MessagesIcon = ({
+  fill = "currentColor",
+  size,
+  height,
+  width,
+  ...props
+}) => {
+  return (
+    <svg
+      fill="none"
+      height={size || height || 24}
+      viewBox="0 0 24 24"
+      width={size || width || 24}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.36 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z"
+        fill={fill}
+      />
     </svg>
   );
 };
@@ -218,7 +242,7 @@ export const Scale = ({
 };
 
 export const Bell = ({
-  fill = 'currentColor',
+  fill = "currentColor",
   size,
   height,
   width,

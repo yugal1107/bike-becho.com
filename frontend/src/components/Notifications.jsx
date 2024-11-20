@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { app } from "../firebase";
+import { Link } from "react-router-dom";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -42,6 +43,11 @@ const Notifications = () => {
           <li key={notification.id}>
             {notification.message} -{" "}
             {notification.timestamp.toDate().toLocaleString()}
+            <Link to={`/messages/${notification.buyRequestId}`}>
+              <button className="ml-4 bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 rounded-lg">
+                View Messages
+              </button>
+            </Link>
           </li>
         ))}
       </ul>

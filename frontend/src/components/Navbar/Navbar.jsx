@@ -21,6 +21,7 @@ import {
   Flash,
   Server,
   TagUser,
+  MessagesIcon, // Import the MessagesIcon
 } from "./Icons.jsx";
 import { AcmeLogo } from "./AcmeLogo.jsx";
 import { useAuth } from "../../context/authContext";
@@ -50,6 +51,7 @@ export default function NavbarUI() {
     flash: <Flash className="text-primary" fill="currentColor" size={30} />,
     server: <Server className="text-success" fill="currentColor" size={30} />,
     user: <TagUser className="text-danger" fill="currentColor" size={30} />,
+    messages: <MessagesIcon className="text-default-500" fill="currentColor" size={24} />, // Add the messages icon
   };
 
   return (
@@ -68,8 +70,6 @@ export default function NavbarUI() {
                 disableRipple
                 className="p-0 bg-transparent data-[hover=true]:bg-transparent"
                 endContent={icons.chevron}
-                radius="sm"
-                variant="light"
               >
                 Available Cities
               </Button>
@@ -125,16 +125,12 @@ export default function NavbarUI() {
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-4">
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <Button isIconOnly variant="light">
-              {icons.bell}
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Notifications">
-            {/* Add your notifications here */}
-          </DropdownMenu>
-        </Dropdown>
+        <NavbarItem>
+          <Link href="/notifications">{icons.bell}</Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link href="/messages">{icons.messages}</Link> {/* Add the messages icon link */}
+        </NavbarItem>
 
         {currentUser ? (
           <Dropdown placement="bottom-end">
