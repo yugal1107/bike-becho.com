@@ -23,12 +23,15 @@ export default function ItemCard({
   year,
   mileage,
   price,
+  rentPrice,
   className,
   condition,
   location,
   fuelType,
+  type, // Add type prop
 }) {
   const formattedPrice = Number(price).toLocaleString('en-IN');
+  const formattedRentPrice = Number(rentPrice).toLocaleString('en-IN');
   const bikeAge = calculateAge(year);
 
   return (
@@ -52,15 +55,6 @@ export default function ItemCard({
             transition-colors line-clamp-1">
             {title}
           </h4>
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">{year}</span>
-            {location && (
-              <>
-                <span className="text-gray-400">•</span>
-                <span className="text-sm text-gray-500">{location}</span>
-              </>
-            )}
-          </div>
         </div>
       </CardHeader>
 
@@ -97,10 +91,12 @@ export default function ItemCard({
 
       <CardFooter className="flex justify-between items-center pt-0">
         <div className="flex flex-col">
-          <p className="text-2xl font-bold text-blue-600">₹{formattedPrice}</p>
+          <p className="text-2xl font-bold text-blue-600">
+            {type === "rent" ? `₹${formattedRentPrice} per hour` : `₹${formattedPrice}`}
+          </p>
           <p className="text-xs text-gray-500">Listed price</p>
         </div>
-        <Link to={`/item/${id}`}>
+        <Link to={`/${type}/${id}`}>
           <Button 
             className="bg-blue-600 text-white font-medium shadow-sm
               hover:bg-blue-700 transition-colors"

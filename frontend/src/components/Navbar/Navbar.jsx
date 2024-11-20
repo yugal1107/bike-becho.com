@@ -21,7 +21,7 @@ import {
   Flash,
   Server,
   TagUser,
-  MessagesIcon, // Import the MessagesIcon
+  MessagesIcon,
 } from "./Icons.jsx";
 import { AcmeLogo } from "./AcmeLogo.jsx";
 import { useAuth } from "../../context/authContext";
@@ -51,7 +51,7 @@ export default function NavbarUI() {
     flash: <Flash className="text-primary" fill="currentColor" size={30} />,
     server: <Server className="text-success" fill="currentColor" size={30} />,
     user: <TagUser className="text-danger" fill="currentColor" size={30} />,
-    messages: <MessagesIcon className="text-default-500" fill="currentColor" size={24} />, // Add the messages icon
+    messages: <MessagesIcon className="text-default-500" fill="currentColor" size={24} />,
   };
 
   return (
@@ -122,6 +122,9 @@ export default function NavbarUI() {
         <NavbarItem>
           <Link href="/sell">SELL</Link>
         </NavbarItem>
+        <NavbarItem>
+          <Link href="/rent-form">RENT</Link>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-4">
@@ -129,7 +132,7 @@ export default function NavbarUI() {
           <Link href="/notifications">{icons.bell}</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/messages">{icons.messages}</Link> {/* Add the messages icon link */}
+          <Link href="/messages">{icons.messages}</Link>
         </NavbarItem>
 
         {currentUser ? (

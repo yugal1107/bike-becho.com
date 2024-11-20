@@ -9,25 +9,28 @@ import SellPage from "./pages/SellItem/SellPage";
 import Profile from "./components/ProfileSection";
 import Notifications from "./components/Notifications";
 import Messages from "./components/Messages";
+import RentPage from "./pages/RentPage/RentPage";
+import RentItemPage from "./pages/RentPage/RentItemPage";
+import RentForm from "./pages/RentPage/RentForm";
 
 function App() {
   return (
-    <>
-      <Router>
-        <NavbarUI />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/item/:itemid" element={<ItemPage />} />
-          <Route path="/sell" element={<SellPage />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/messages/:buyRequestId" element={<Messages />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <NavbarUI />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/item/:itemid" element={<ItemPage />} />
+        <Route path="/sell" element={<SellPage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/messages" element={<Messages />} />
+        <Route path="/rent" element={<RentPage />} />
+        <Route path="/rent/:itemid" element={<RentItemPage />} />
+        <Route path="/rent-form" element={<RentForm />} />
+      </Routes>
+    </Router>
   );
 }
 

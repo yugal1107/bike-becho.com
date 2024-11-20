@@ -1,18 +1,14 @@
-import React from "react";
-import NavbarUI from "../components/Navbar/Navbar";
-import { useAuth } from "../context/authContext";
+import React, { useState } from "react";
 import CardList from "../components/Card/CardList";
-import Notifications from "../components/Notifications";
+import ToggleSwitch from "../components/ToggleSwitch";
 
 const Home = () => {
-  const { currentUser } = useAuth();
-  console.log("Home.jsx: user: ", currentUser);
+  const [view, setView] = useState("buy");
 
   return (
     <div className="lg:px-52 lg:py-12">
-      {/* <NavbarUI /> */}
-      <CardList />
-      <Notifications />
+      <ToggleSwitch view={view} setView={setView} />
+      <CardList view={view} />
     </div>
   );
 };
