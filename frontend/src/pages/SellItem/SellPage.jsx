@@ -13,7 +13,6 @@ import {
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { app } from "../../firebase";
-import { Cloudinary } from "cloudinary-core";
 import { FaUpload } from "react-icons/fa"; // Import the Upload icon
 
 const VehicleListingForm = () => {
@@ -43,31 +42,44 @@ const VehicleListingForm = () => {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    const cloudinary = new Cloudinary({
-      cloud_name: "your-cloud-name",
-      secure: true,
-    });
 
     const uploadedImages = await Promise.all(
       files.map(async (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "your-upload-preset");
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", "myCloud");
+        data.append("cloud_name", "dtzjzuoud");
 
-        const response = await fetch(
-          `https://api.cloudinary.com/v1_1/dtzjzuoud/image/upload`,
-          {
-            method: "POST",
-            body: formData,
+        try {
+          if (file === null) {
+            return toast.error("Please Upload a file");
           }
-        );
 
-        const data = await response.json();
-        return data.secure_url;
+          // Determine the upload URL based on file type
+          const isImage = file.type.startsWith("image/");
+          const uploadUrl = isImage
+            ? "https://api.cloudinary.com/v1_1/dtzjzuoud/image/upload"
+            : "https://api.cloudinary.com/v1_1/dtzjzuoud/video/upload";
+
+          const res = await fetch(uploadUrl, {
+            method: "POST",
+            body: data,
+          });
+
+          const cloudData = await res.json();
+          if (cloudData.error) {
+            console.error("Error uploading image:", cloudData.error);
+            return null;
+          }
+          return cloudData.secure_url;
+        } catch (error) {
+          console.error("Error uploading file:", error);
+          return null;
+        }
       })
     );
 
-    setImages(uploadedImages);
+    setImages(uploadedImages.filter((url) => url !== null));
   };
 
   const handleSubmit = async (e) => {
