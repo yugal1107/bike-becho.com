@@ -15,8 +15,6 @@ import {
 import {
   ChevronDown,
   Scale,
-  Bell,
-  Lock,
   Activity,
   Flash,
   Server,
@@ -42,9 +40,7 @@ export default function NavbarUI() {
 
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
-    bell: <Bell className="text-default-500" fill="currentColor" size={24} />,
     scale: <Scale className="text-warning" fill="currentColor" size={30} />,
-    lock: <Lock className="text-success" fill="currentColor" size={30} />,
     activity: (
       <Activity className="text-secondary" fill="currentColor" size={30} />
     ),
@@ -55,20 +51,20 @@ export default function NavbarUI() {
   };
 
   return (
-    <Navbar>
+    <Navbar className="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
       <a href="/">
         <NavbarBrand>
-          <p className="font-bold text-inherit">MOTOMART</p>
+          <p className="font-bold text-xl text-white">MOTOMART</p>
         </NavbarBrand>
       </a>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+      <NavbarContent className="hidden sm:flex gap-6" justify="center">
         <Dropdown>
           <NavbarItem>
             <DropdownTrigger>
               <Button
                 disableRipple
-                className="p-0 bg-transparent data-[hover=true]:bg-transparent"
+                className="p-0 bg-transparent data-[hover=true]:bg-transparent text-white hover:text-blue-200"
                 endContent={icons.chevron}
               >
                 Available Cities
@@ -77,9 +73,9 @@ export default function NavbarUI() {
           </NavbarItem>
           <DropdownMenu
             aria-label="ACME features"
-            className="w-[340px]"
+            className="w-[340px] bg-white/90 backdrop-blur-md"
             itemClasses={{
-              base: "gap-4",
+              base: "gap-4 rounded-lg hover:bg-blue-50",
             }}
           >
             <DropdownItem
@@ -120,19 +116,22 @@ export default function NavbarUI() {
           </DropdownMenu>
         </Dropdown>
         <NavbarItem>
-          <Link href="/sell">SELL</Link>
+          <Link href="/sell" className="text-white hover:text-blue-200 font-medium">
+            SELL
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/rent-form">RENT</Link>
+          <Link href="/rent-form" className="text-white hover:text-blue-200 font-medium">
+            RENT
+          </Link>
         </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-4">
         <NavbarItem>
-          <Link href="/notifications">{icons.bell}</Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href="/messages">{icons.messages}</Link>
+          <Link href="/messages" className="text-white hover:text-blue-200">
+            {icons.messages}
+          </Link>
         </NavbarItem>
 
         {currentUser ? (
@@ -142,9 +141,13 @@ export default function NavbarUI() {
                 as="button"
                 size="sm"
                 name={currentUser.displayName || "User"}
+                className="transition-transform hover:scale-105"
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions">
+            <DropdownMenu 
+              aria-label="Profile Actions"
+              className="bg-white/90 backdrop-blur-md"
+            >
               <DropdownItem key="profile" as={Link} href="/profile">
                 My Profile
               </DropdownItem>
@@ -162,10 +165,18 @@ export default function NavbarUI() {
         ) : (
           <>
             <NavbarItem className="hidden lg:flex">
-              <Link href="/login">Login</Link>
+              <Link href="/login" className="text-white hover:text-blue-200 font-medium">
+                Login
+              </Link>
             </NavbarItem>
             <NavbarItem>
-              <Button color="primary" variant="flat" as={Link} href="/register">
+              <Button 
+                color="primary" 
+                variant="flat" 
+                as={Link} 
+                href="/register"
+                className="bg-white text-blue-600 hover:bg-blue-50"
+              >
                 Sign Up
               </Button>
             </NavbarItem>

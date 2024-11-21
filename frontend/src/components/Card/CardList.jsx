@@ -39,7 +39,7 @@ const CardList = ({ view }) => {
             price={listing.price}
             rentPrice={listing.rentPrice}
             className="bg-white rounded-lg shadow-lg p-6"
-            type={view} // Pass the type prop
+            type={view === "buy" ? "item" : "rent"} // Correct the type prop
           />
         </div>
       ))}

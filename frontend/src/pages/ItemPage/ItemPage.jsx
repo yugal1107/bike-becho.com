@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { Chip } from "@nextui-org/react"; // Add this import
 import { app } from "../../firebase";
 import BuyButton from "./BuyButton";
 import MessageButton from "./MessageButton";
+import PricePredictor from "../../components/PricePredictor";
 
 const ItemPage = () => {
   const { itemid } = useParams();
@@ -104,38 +104,6 @@ const ItemPage = () => {
                   </p>
                 )}
               </div>
-
-              {/* Enhanced Specifications */}
-              <div className="flex flex-wrap gap-3 mb-4">
-                {item.condition && (
-                  <Chip
-                    color={item.condition === "New" ? "success" : "default"}
-                  >
-                    {item.condition}
-                  </Chip>
-                )}
-                {item.mileage && (
-                  <Chip variant="flat" className="bg-green-100">
-                    {item.mileage} km
-                  </Chip>
-                )}
-                {item.fuelType && (
-                  <Chip variant="flat" className="bg-purple-100">
-                    {item.fuelType}
-                  </Chip>
-                )}
-                {item.transmission && (
-                  <Chip variant="flat" className="bg-blue-100">
-                    {item.transmission}
-                  </Chip>
-                )}
-                {item.ownership && (
-                  <Chip variant="flat" className="bg-yellow-100">
-                    {item.ownership} Owner
-                  </Chip>
-                )}
-              </div>
-
               {/* Specifications */}
               <div className="grid grid-cols-2 gap-y-4">
                 {[
@@ -152,7 +120,6 @@ const ItemPage = () => {
                   </div>
                 ))}
               </div>
-
               {/* Description */}
               <div>
                 <h3 className="text-lg font-semibold mb-2">Description</h3>
@@ -160,7 +127,6 @@ const ItemPage = () => {
                   {item.description}
                 </p>
               </div>
-
               {/* Seller Info */}
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold mb-4">
@@ -180,11 +146,14 @@ const ItemPage = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Action Button */}
-              <div>
+              {/* Action Buttons */}
+              <div className="flex space-x-4">
+                {/* <BuyButton itemId={itemid} sellerId={item.userId} /> */}
                 <MessageButton itemId={itemid} sellerId={item.userId} />
               </div>
+              {/* Price Predictor */}
+              <PricePredictor vehicleSpecs={item} />{" "}
+              {/* Add the PricePredictor component */}
             </div>
           </div>
         </div>

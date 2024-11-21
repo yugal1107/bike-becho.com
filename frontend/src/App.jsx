@@ -12,11 +12,13 @@ import Messages from "./components/Messages";
 import RentPage from "./pages/RentPage/RentPage";
 import RentItemPage from "./pages/RentPage/RentItemPage";
 import RentForm from "./pages/RentPage/RentForm";
+import Chatbot from "./components/ChatBot";
 
 function App() {
   return (
     <Router>
       <NavbarUI />
+      <Chatbot />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
