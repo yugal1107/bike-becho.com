@@ -13,6 +13,7 @@ import RentPage from "./pages/RentPage/RentPage";
 import RentItemPage from "./pages/RentPage/RentItemPage";
 import RentForm from "./pages/RentPage/RentForm";
 import Chatbot from "./components/ChatBot";
+import AdminDashboard from "./Admin/AdminDashboard";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/rent" element={<RentPage />} />
         <Route path="/rent/:itemid" element={<RentItemPage />} />
         <Route path="/rent-form" element={<RentForm />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

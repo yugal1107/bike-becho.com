@@ -32,6 +32,8 @@ const Register = () => {
 
       await sendEmailVerification(user);
       alert("Verification email sent! Please check your inbox.");
+      // Sign out the user to prevent auto-login
+      await auth.signOut();
       navigate("/login");
     } catch (error) {
       setError("Error creating account: " + error.message);

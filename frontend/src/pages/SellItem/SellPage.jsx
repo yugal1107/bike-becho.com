@@ -102,6 +102,7 @@ const VehicleListingForm = () => {
         images,
         createdAt: new Date(),
         userId: user.uid,
+        sellerName: user.displayName || "Anonymous Seller",
       };
 
       await addDoc(collection(db, "listings"), newListing);

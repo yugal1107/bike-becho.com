@@ -5,14 +5,14 @@ import {
   addDoc,
   getDoc,
   doc,
-  writeBatch,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { app } from "../../firebase";
 
-const BuyButton = ({ itemId, sellerId }) => {
+const BuyButton = ({ itemId }) => {
   const [showModal, setShowModal] = useState(false);
   const [note, setNote] = useState("");
+  const [mobile, setMobile] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,33 +30,18 @@ const BuyButton = ({ itemId, sellerId }) => {
     }
 
     try {
-      const buyerDoc = await getDoc(doc(db, "users", user.uid));
-      const buyerName = buyerDoc.exists()
-        ? buyerDoc.data().name
-        : "Unknown Buyer";
+      const buyerName = user.displayName || "Unknown Buyer";
 
       const buyRequest = {
         itemId,
         buyerId: user.uid,
+        buyerName,
+        mobile,
         note,
         timestamp: new Date(),
       };
 
-      const notification = {
-        userId: sellerId,
-        message: `${buyerName} has requested to buy item ${itemId}`,
-        read: false,
-        timestamp: new Date(),
-      };
-
-      const batch = writeBatch(db);
-      const buyRequestRef = doc(collection(db, "buyRequests"));
-      const notificationRef = doc(collection(db, "notifications"));
-
-      batch.set(buyRequestRef, buyRequest);
-      batch.set(notificationRef, notification);
-
-      await batch.commit();
+      await addDoc(collection(db, "buyRequests"), buyRequest);
 
       alert("Buy request sent!");
       setShowModal(false);
@@ -82,6 +67,14 @@ const BuyButton = ({ itemId, sellerId }) => {
           <div className="flex items-center justify-center min-h-screen">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
               <h2 className="text-2xl font-bold mb-4">Buy Request</h2>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-md p-2 mb-4"
+                placeholder="Enter your mobile number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                required
+              />
               <textarea
                 className="w-full border border-gray-300 rounded-md p-2 mb-4"
                 rows={3}

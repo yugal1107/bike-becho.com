@@ -148,8 +148,8 @@ const ItemPage = () => {
               </div>
               {/* Action Buttons */}
               <div className="flex space-x-4">
-                {/* <BuyButton itemId={itemid} sellerId={item.userId} /> */}
-                <MessageButton itemId={itemid} sellerId={item.userId} />
+                <BuyButton itemId={itemid} sellerId={item.userId} />
+                {/* <MessageButton sellerName={item.sellerName} sellerId={item.userId} /> */}
               </div>
               {/* Price Predictor */}
               <PricePredictor vehicleSpecs={item} />{" "}

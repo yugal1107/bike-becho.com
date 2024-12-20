@@ -9,6 +9,8 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { app } from "../../firebase";
 
@@ -28,6 +30,13 @@ const MessageButton = ({ sellerId }) => {
     }
 
     const db = getFirestore(app);
+
+    // Fetch seller's name from the users collection
+    const sellerDoc = await getDoc(doc(db, "users", sellerId));
+    const sellerName = sellerDoc.exists()
+      ? sellerDoc.data().displayName || "Seller"
+      : "Seller";
+
     const conversationKey = createConversationKey(user.uid, sellerId);
 
     // Check if conversation exists
@@ -44,7 +53,7 @@ const MessageButton = ({ sellerId }) => {
       const conversationRef = await addDoc(collection(db, "conversations"), {
         key: conversationKey,
         participants: [user.uid, sellerId],
-        participantNames: [user.displayName || "User", "Seller Name"], // Replace "Seller Name" with actual seller name
+        participantNames: [user.displayName || "User", sellerName],
         createdAt: serverTimestamp(),
         lastMessageAt: serverTimestamp(),
       });

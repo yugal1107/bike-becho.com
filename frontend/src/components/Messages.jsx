@@ -137,13 +137,14 @@ const Messages = () => {
           <>
             <div className="p-4 border-b">
               <h3 className="text-lg font-semibold">
-                {
-                  selectedConversation.participantNames[
-                    selectedConversation.participants.findIndex(
-                      (id) => id !== user.uid
-                    )
-                  ]
-                }
+                {selectedConversation && user && (() => {
+                  const otherParticipantIndex = selectedConversation.participants.findIndex(
+                    (id) => id !== user.uid
+                  );
+                  const otherParticipantName =
+                    selectedConversation.participantNames[otherParticipantIndex];
+                  return otherParticipantName;
+                })()}
               </h3>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
